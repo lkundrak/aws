@@ -230,11 +230,33 @@ unshift @ARGV, $1 if $0 =~ /^(?:.*[\\\/])?(?:(?:ec2|s3|sqs)-?)?(.+?)(?:\..+)?$/ 
 
 # parse meta-parameters, leaving parameters in @argv
 
+# If any of these is encountered, slurp another argument
+# as a value, if it's not immediately followed by one after "="
+%needs_arg = (
+    region	=> 1,
+);
+my $key_for_arg;
+
 for (split(/[\r\s]+/, load_file_silent("$home/.awsrc")), @ARGV)
 {
-    if (/^--([\w\-]+?)(?:=(.*))?$/s)
+    if (/^--([\w\-]+?)(?:=(.*))?$/s or $key_for_arg)
     {
 	my($key, $val) = ($1, $2);
+
+	if (!$key)
+	{
+	    # We're expecting just a value, found key that demands
+	    # a value in previous run
+	    ($key, $val) = ($key_for_arg, $_);
+	    $key_for_arg = undef;
+	}
+        elsif ($needs_arg{$key} && !$val)
+        {
+	    # A key that needs value without one. Skip.
+	    $key_for_arg = $key;
+	    next;
+	}
+
 	$key =~ s/-/_/g;
 	if (exists $keyword{$key})
 	{
