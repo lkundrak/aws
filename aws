@@ -137,6 +137,7 @@ $sqs_version = "2009-02-01";
 								 ["", ImageId, "ami-5647a33f"],
 								 ["i", InstanceType, "m1.small"],
 								 ["type", InstanceType],
+								 ["t", InstanceType],
 								 ["a", AddressingType, "public"],
 								 ["n", MinCount, 1],
 								 ["n", MaxCount, 1],
