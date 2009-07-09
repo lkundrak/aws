@@ -142,7 +142,7 @@ $sqs_version = "2009-02-01";
 								 ["n", MinCount, 1],
 								 ["n", MaxCount, 1],
 								 ["g", SecurityGroupN, "default"],
-								 ["k", KeyName, "default"],
+								 ["k", KeyName],
 								 ["z", "Placement.AvailabilityZone"],
 								 ["availability-zone", "Placement.AvailabilityZone"],
 								 ["kernel", KernelId],
